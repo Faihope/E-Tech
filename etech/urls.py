@@ -10,6 +10,8 @@ urlpatterns=[
    path('register/',views.registeruser,name='registeruser'),
    path('login/', views.loginpage, name="login"), 
    path('logout/',views.logoutuser,name='logout'),
+   path('<int:id>/',views.detail,name='detail'),
+
 
 ]
 

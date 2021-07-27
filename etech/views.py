@@ -57,3 +57,8 @@ def loginpage(request):
 def logoutuser(request):
     
     return redirect(reverse('login'))
+
+
+def detail(request,id):
+    product_object=Product.objects.get(id=id)
+    return render(request,'details.html',{'product_object':product_object})

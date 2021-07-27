@@ -1,0 +1,25 @@
+{%extends 'base.html'%}
+
+{% block content%}
+<div class="container">
+
+
+    <div class="col-md-6">
+        <div class="row mt-4" >
+            <div class="card" style="width: 400px;">
+                <img class="card-img-top" src="{{product_object.image}}" alt="Card image cap">
+                <div class="card-body">
+                    <h5 class="card-title"> {{product_object.name}}</h5>
+                    <h5 class="card-title"> Price:{{product_object.price}}</h5>
+                    <h5 class="card-title"> Discounted Price:{{product_object.discount_price}}</h5>
+
+                    <p class="card-text">{{product_object.description}}.</p>
+                    <p class="card-text"><small class="text-muted"> Category:{{product_object.category}}</small></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+{% endblock%}
