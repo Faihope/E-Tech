@@ -1,0 +1,40 @@
+
+{% block content %}
+
+<nav class="navbar navbar-expand-md navbar-dark bg-dark">
+    <a href="/" style="color: white;" class="navbar-brand">UpdateMe</a>
+    <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+
+
+    <div class="collapse navbar-collapse" id="navbarCollapse">
+        <div class="navbar-nav ml-4">
+            <a href="/" style="color: white;" class="nav-item nav-link">Home</a>
+
+        </div>
+
+        <form class="card card-sm ml-4 ">
+            <div class="card-body row no-gutters align-items-center">
+                <div class="col">
+                    <input type="search" name='item_name' placeholder="Search for Business"
+                        class="form-control form-control">
+
+                </div>
+                <div class="col-auto">
+                    <button class="btn btn-success" type="submit">Search</button>
+                </div>
+            </div>
+        </form>
+        <div class="navbar-nav ml-auto  ">
+
+            <a href="" style="color: white;" class="nav-item nav-link mr-sm-2">Profile</a>
+            <a href="" style="color: white;" class="nav-item nav-link ">Login</a>
+            <a href="" style="color: white;" class="nav-item nav-link">Logout</a>
+
+        </div>
+
+    </div>
+</nav>
+{% endblock%}
