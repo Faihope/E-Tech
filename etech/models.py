@@ -20,7 +20,7 @@ class Product(models.Model):
     discount_price=models.FloatField()
     category=models.CharField(max_length=200)
     description=models.TextField()
-    image=models.CharField(max_length=300)
+    image=models.ImageField(max_length=300)
     digital=models.BooleanField(default=False,null=True,blank=True)
 
     def __str__(self):
@@ -47,6 +47,7 @@ class Delivery(models.Model):
     address=models.CharField(max_length=200,null=True)
     state=models.CharField(max_length=200,null=True)
     city=models.CharField(max_length=200,null=True)
+    # date_added=models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.address

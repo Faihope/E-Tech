@@ -1,3 +1,4 @@
+from etech.models import Product
 from django.shortcuts import render,redirect
 from .forms import CreateUserForm
 from django.contrib import messages
@@ -6,8 +7,10 @@ from django.urls import reverse
 
 # Create your views here.
 def index(request):
+    products=Product.objects.all()
+    context={'products':products}
 
-    return render(request,'index.html')
+    return render(request,'index.html',context)
 
 def registeruser(request):
     if request.method == 'POST':
