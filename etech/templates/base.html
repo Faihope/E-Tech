@@ -1,0 +1,40 @@
+{% load bootstrap4%}
+{% load static%}
+
+<!DOCTYPE html>
+<html>
+<head>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
+  <meta charset="utf-8">
+
+  {% if title %}
+  <title>E-tech - {{title}}</title>
+  {% else %}
+    <title> My E-Tech </title>
+  {% endif %}
+
+  {% block styles %}
+  {% bootstrap_css%}
+
+{% endblock %}
+<style>
+  *{
+    font-family: 'Roboto', sans-serif;
+
+  }
+</style>
+
+</head>
+<body class="m-5">
+{% include "navbar.html" %}
+{% block content %}
+
+{%endblock%}
+
+
+</body>
+
+</html>
