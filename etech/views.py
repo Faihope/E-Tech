@@ -2,6 +2,7 @@ from django.shortcuts import render,redirect
 from .forms import CreateUserForm
 from django.contrib import messages
 from django.contrib.auth import authenticate,login,logout as dj_login
+from django.urls import reverse
 
 # Create your views here.
 def index(request):
@@ -44,3 +45,7 @@ def loginpage(request):
 
       
     return render(request,'registration/login.html')
+
+def logoutuser(request):
+    
+    return redirect(reverse('login'))

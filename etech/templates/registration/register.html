@@ -2,7 +2,7 @@
 
 {% block content %}
 
-<div class="container ">
+<div class="container text-center mt-4" style="background-color: aqua; width: 400px;">
     <h2>Sign up</h2>
     <form method="post" >
         {% csrf_token %}
@@ -11,7 +11,7 @@
             {{ field.label_tag }}<br>
             {{ field }}
             {% if field.help_text %}
-            <small style="color: grey">{{ field.help_text }}</small>
+            <!-- <small style="color: grey">{{ field.help_text }}</small> -->
             {% endif %}
             {% for error in field.errors %}
             <p style="color: red">{{ error }}</p>
@@ -27,7 +27,7 @@
 
     
         <div class="d-flex justify-content-center links">
-            Already have an account? <a href="" class="ml-2">Login</a>
+            Already have an account? <a href="{% url 'login'%}" class="ml-2">Login</a>
         </div>
 
   
