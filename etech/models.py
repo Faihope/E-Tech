@@ -2,6 +2,8 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.deletion import CASCADE
 from django.db.models.fields import EmailField
+import cloudinary
+from cloudinary.models import CloudinaryField
 
 # Create your models here.
 
@@ -20,7 +22,7 @@ class Product(models.Model):
     discount_price=models.FloatField()
     category=models.CharField(max_length=200)
     description=models.TextField()
-    image=models.ImageField(max_length=300)
+    image=CloudinaryField('Image',null=True)   
     digital=models.BooleanField(default=False,null=True,blank=True)
 
     def __str__(self):
