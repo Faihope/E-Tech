@@ -1,12 +1,21 @@
 {% extends 'base.html'%}
 
 {% block content%}
+{% block  script%}
+<script src="https://code.jquery.com/jquery-2.2.4.js"
+integrity="sha256-iT6Q9iMJYuQiMWNd9lDyBUStIq/8PuOW33aOqmvFpqI=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+{% endblock%}
+
 <div class="container mt-4">
     <div class="row">
         {% for product in products%}
-        <div class="col-md-4 mb-4">
+        <div class="col-md-3 mb-4">
             <div class="card">
-                <img src="{{product.image}}" alt="" class="card-img-top" height=180px >
+                <img src="{{product.image.url}}" alt="" class="card-img-top" height=180px >
                 <div class="card-body">
                     <div class="card-title " style="font-weight: 900;">
                         {{product.name}}
@@ -15,7 +24,7 @@
                         </div>
                     </div>
                     <a class="btn btn-outline-warning" href="/{{product.id}}">View</a>
-                    <button id="{{product.id}}" class="btn btn-outline-warning">Add to cart </button>
+                    <button id="{{product.id}}" class="btn atc btn-outline-warning">Add to cart </button>
 
                 </div>
             </div>
@@ -24,4 +33,39 @@
     </div>
 
 </div>
+<script type="text/javascript">
+    console.log('Hey');
+
+    if (localStorage.getItem('cart') == null) {
+        var cart = {};
+    } else {
+        cart = JSON.parse(localStorage.getItem('cart'));
+    }
+
+    $(document).on('click', '.atc', function () {
+        console.log('clicked')
+        var item_id = this.id.toString();
+        console.log(item_id)
+
+        if (cart[item_id] != undefined) {
+            cart[item_id] = cart[item_id] + 1;
+
+        } else {
+            cart[item_id] = 1;
+        }
+        console.log(cart);
+        localStorage.setItem('cart', JSON.stringify(cart));
+        document.getElementById('cart').innerHTML = "Cart(" + Object.keys(cart).length + ")";
+
+    });
+
+    $(function () {
+        $('[data-toggle="popover"]').popover();
+        document.getElementById("cart").setAttribute('data-content', '<h6>This is your cart</h6>');
+    });
+</script>
+
+
+
+
 {% endblock%}

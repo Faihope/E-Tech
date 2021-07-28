@@ -22,7 +22,7 @@ class Product(models.Model):
     discount_price=models.FloatField()
     category=models.CharField(max_length=200)
     description=models.TextField()
-    image=CloudinaryField('Image',null=True)   
+    image=CloudinaryField('Image',null=True,default='image')   
     digital=models.BooleanField(default=False,null=True,blank=True)
 
     def __str__(self):

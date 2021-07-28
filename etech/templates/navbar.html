@@ -1,5 +1,13 @@
-
 {% block content %}
+
+{% block  script%}
+<script src="https://code.jquery.com/jquery-2.2.4.js"
+integrity="sha256-iT6Q9iMJYuQiMWNd9lDyBUStIq/8PuOW33aOqmvFpqI=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+{% endblock%}
 
 <nav class="navbar navbar-expand-md navbar-dark " style="background-color: rgb(116, 167, 167);">
     <a href="/" style="color: white;" class="navbar-brand">E-Tech</a>
@@ -28,6 +36,13 @@
             </div>
         </form>
         <div class="navbar-nav ml-auto  ">
+            <!-- <a class="nav-item nav-link" href="#"> -->
+            <button type="button" id="cart" class="btn btn-light" data-container="body" data-toggle="popover"
+                data-placement="bottom" data-content="Vivamus
+sagittis lacus vel augue laoreet rutrum faucibus.">
+                Cart(0)
+            </button>
+            <!-- </a> -->
 
             <!-- <a href="" style="color: white;" class="nav-item nav-link mr-sm-2">Profile</a> -->
             <a href="" style="color: white;" class="nav-item nav-link ">Login</a>
@@ -37,4 +52,37 @@
 
     </div>
 </nav>
+
+<script type="text/javascript">
+    console.log('Hey');
+
+    if (localStorage.getItem('cart') == null) {
+        var cart = {};
+    } else {
+        cart = JSON.parse(localStorage.getItem('cart'));
+    }
+
+    $(document).on('click', '.atc', function () {
+        console.log('clicked')
+        var item_id = this.id.toString();
+        console.log(item_id)
+
+        if (cart[item_id] != undefined) {
+            cart[item_id] = cart[item_id] + 1;
+
+        } else {
+            cart[item_id] = 1;
+        }
+        console.log(cart);
+        localStorage.setItem('cart', JSON.stringify(cart));
+        document.getElementById('cart').innerHTML = "Cart(" + Object.keys(cart).length + ")";
+
+    });
+
+    $(function () {
+        $('[data-toggle="popover"]').popover();
+        document.getElementById("cart").setAttribute('data-content', '<h6>This is your cart</h6>');
+    });
+
+</script>
 {% endblock%}
