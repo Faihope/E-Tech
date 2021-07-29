@@ -1,19 +1,32 @@
-from etech.models import Product
+from etech.models import Customer, Order, OrderItem, Product
 from django.shortcuts import render,redirect
 from .forms import CreateUserForm
 from django.contrib import messages
 from django.contrib.auth import authenticate,login,logout as dj_login
 from django.urls import reverse
+from django.contrib.auth.models import User
+from django.http import JsonResponse
+import json
+
 
 # Create your views here.
 def index(request):
+    if request.user.is_authenticated:
+        customer=request.user.customer
+        order,created=Order.objects.get_or_create(customer=customer,complete=False)
+        items=order.orderitem_set.all()
+        cartItems=order.get_cart_items
+    else:
+        items=[]
+        order={'get_cart_total':0,'get_cart_items':0,'shipping':False}
+        cartItems=order['get_cart_items']
     products=Product.objects.all()
 
     #search code
     item_name=request.GET.get('item_name')
     if item_name!='' and item_name is not None:
         products=products.filter(name__icontains=item_name)
-    context={'products':products}
+    context={'products':products,'cartItems':cartItems}
 
     return render(request,'index.html',context)
 
@@ -62,3 +75,56 @@ def logoutuser(request):
 def detail(request,id):
     product_object=Product.objects.get(id=id)
     return render(request,'details.html',{'product_object':product_object})
+
+
+def checkout(request):
+    if request.user.is_authenticated:
+        customer=request.user.customer
+        order,created=Order.objects.get_or_create(customer=customer,complete=False)
+        items=order.orderitem_set.all()
+        cartItems=order.get_cart_items
+    else:
+        items=[]
+        order={'get_cart_total':0,'get_cart_items':0,'shipping':False}
+        cartItems=order['get_cart_items']
+
+    return render(request,'checkout.html',{'items':items,'order':order,'cartItems':cartItems})
+
+
+def cart(request):
+    if request.user.is_authenticated:
+        customer=request.user.customer
+        order,created=Order.objects.get_or_create(customer=customer,complete=False)
+        items=order.orderitem_set.all()
+        cartItems=order.get_cart_items
+    else:
+        items=[]
+        order={'get_cart_total':0,'get_cart_items':0,'shipping':False}
+        cartItems=order['get_cart_items']
+    return render(request,'cart.html',{'items':items,'order':order,'cartItems':cartItems})
+
+
+def updateItem(request):
+    data=json.loads(request.data)
+    productId=data['productId']
+    action=data['action']
+    print('Action:',action)
+
+    customer=request.user.customer
+    product=Product.objects.get(id=productId)
+    order,created=Order.objects.get_or_create(customer=customer,complete=False)
+
+
+    orderItem,created=OrderItem.objects.get_or_create(order=order,product=product,complete=False)
+    if action =='add':
+        orderItem.quantity=(orderItem.quantity + 1)
+
+    elif action =='remove':
+        orderItem.quantity=(orderItem.quantity - 1)
+
+    orderItem.save()
+
+    if orderItem.quantity<=0:
+        orderItem.delete()
+
+    return JsonResponse('Item was added',safe=False)
