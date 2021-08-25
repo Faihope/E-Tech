@@ -8,12 +8,17 @@ from django.conf.urls.static import static
 urlpatterns=[
    path('',views.index,name='index'),
    path('register/',views.registeruser,name='registeruser'),
-   path('login/', views.loginpage, name="login"), 
+   path('loginuser/', views.loginpage, name="loginuser"), 
    path('logout/',views.logoutuser,name='logout'),
    path('<int:id>/',views.detail,name='detail'),
    path('checkout/',views.checkout,name='checkout'),
    path('cart/',views.cart,name='cart'),
    path('update/',views.updateItem,name='update_item'),
+   path('profile/<int:id>/',views.profile,name='profile'),
+   path('updateprofile/',views.updateprofile,name='updateprofile'),
+
+
+   
 
 
 

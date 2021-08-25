@@ -1,0 +1,21 @@
+{% extends 'base.html'%}
+
+{% block content %}
+{% load crispy_forms_tags %}
+{% load static %}
+<div class="col-sm-4 col-md-4 col-lg-4">
+    {%if profile_data.profile_pic.is_empty%}
+    <img src="{{profile_data.profile_pic.url}}" alt="Image" width="100%">
+    {%else%}
+    <img src="https://i2.wp.com/pngkey.com/png/detail/115-1150152_default-profile-picture-avatar-png-green.png" width="200px" />
+    {%endif%}
+</div>
+<div class="col-sm-4 col-md-4 col-lg-4">
+    <h4>Username: {{current_user}}</h4>
+    <h5><i>Email: {{current_user.email}}</i></h5>
+    <a href="{%url 'updateprofile'%}"><button class="btn btn-md btn-info">Edit Profile</button></a>
+</div>
+<div class="col-sm-4 col-md-4 col-lg-4">
+</div>
+  
+    {% endblock content %}

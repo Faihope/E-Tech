@@ -1,6 +1,5 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.db.models.deletion import CASCADE
 from django.db.models.fields import EmailField
 import cloudinary
 from cloudinary.models import CloudinaryField
@@ -15,6 +14,15 @@ class Customer(models.Model):
 
     def __str__(self):
         return self.name
+
+class Profile(models.Model):
+    profile_pic=CloudinaryField('Image',default='default.jpg')
+    bio=models.TextField(max_length=500)
+    user=models.OneToOneField(User,null=True,on_delete=models.CASCADE)
+    
+    def __str__(self):
+        return self.user
+
 
 class Product(models.Model):
     name=models.CharField(max_length=200,null=True)

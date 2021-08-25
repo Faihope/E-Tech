@@ -1,18 +1,27 @@
-from etech.models import Customer, Order, OrderItem, Product
+from etech.models import Customer, Order, OrderItem, Product,Profile
 from django.shortcuts import render,redirect
-from .forms import CreateUserForm
+from .forms import *
 from django.contrib import messages
 from django.contrib.auth import authenticate,login,logout as dj_login
 from django.urls import reverse
 from django.contrib.auth.models import User
 from django.http import JsonResponse
 import json
+from django.core.exceptions import ObjectDoesNotExist
+from django.contrib.auth.decorators import login_required
+
+
 
 
 # Create your views here.
 def index(request):
     if request.user.is_authenticated:
-        customer=request.user.customer
+        try:
+
+            customer=request.user.customer
+        except ObjectDoesNotExist:
+
+            customer = Customer.objects.create(user=request.user)
         order,created=Order.objects.get_or_create(customer=customer,complete=False)
         items=order.orderitem_set.all()
         cartItems=order.get_cart_items
@@ -37,7 +46,7 @@ def registeruser(request):
             form.save()
             messages.success(request, 'Account Created Successfully!. Check out our Email later :)')
 
-            return redirect('login')
+            return redirect('loginuser')
     else:
         form = CreateUserForm
     context = {
@@ -69,9 +78,9 @@ def loginpage(request):
 
 def logoutuser(request):
     
-    return redirect(reverse('login'))
+    return redirect(reverse('loginuser'))
 
-
+@login_required(login_url='login')
 def detail(request,id):
     product_object=Product.objects.get(id=id)
     return render(request,'details.html',{'product_object':product_object})
@@ -79,7 +88,14 @@ def detail(request,id):
 
 def checkout(request):
     if request.user.is_authenticated:
-        customer=request.user.customer
+
+        try:
+
+            customer=request.user.customer
+        except ObjectDoesNotExist:
+
+            customer = Customer.objects.create(user=request.user)
+
         order,created=Order.objects.get_or_create(customer=customer,complete=False)
         items=order.orderitem_set.all()
         cartItems=order.get_cart_items
@@ -93,7 +109,13 @@ def checkout(request):
 
 def cart(request):
     if request.user.is_authenticated:
-        customer=request.user.customer
+        try:
+
+            customer=request.user.customer
+        except ObjectDoesNotExist:
+
+            customer = Customer.objects.create(user=request.user)
+
         order,created=Order.objects.get_or_create(customer=customer,complete=False)
         items=order.orderitem_set.all()
         cartItems=order.get_cart_items
@@ -111,6 +133,8 @@ def updateItem(request):
     print('Action:',action)
 
     customer=request.user.customer
+    customer = Customer.objects.create(user=request.user)
+
     product=Product.objects.get(id=productId)
     order,created=Order.objects.get_or_create(customer=customer,complete=False)
 
@@ -128,3 +152,36 @@ def updateItem(request):
         orderItem.delete()
 
     return JsonResponse('Item was added',safe=False)
+
+@login_required(login_url='login')
+def profile(request,id):
+    profile_data = User.objects.get(id=id)
+    current_user = request.user
+    if request.method =='POST':
+        profile=ProfileUpdateForm(request.POST,request.FILES,instance=current_user.profile)
+        if profile.is_valid():
+            messages.success(request,'Your profile has been updated!')
+            return redirect('profile')
+    else:
+        profile=ProfileUpdateForm(instance=request.user)
+    context={"profile":profile,"current_user": current_user,"profile_data":profile_data}
+    return render(request, 'profile.html',context)
+
+@login_required(login_url='login')
+def updateprofile(request):
+    current_user = request.user
+    profile=Profile.objects.all()
+    if request.method == 'POST':
+        form = ProfileUpdateForm(request.POST, instance=request.user)
+        profile_form = ProfileForm(request.POST, request.FILES) 
+
+        if form.is_valid() and profile_form.is_valid():
+            user_form = form.save()
+            custom_form = profile_form.save(False)
+            custom_form.user = user_form
+            custom_form.save()
+            return redirect('profile')
+    else:
+        form = ProfileUpdateForm(instance=request.user)
+
+    return render(request, 'updateprofile.html',{"form": form ,'profile':profile,'current_user':current_user} )

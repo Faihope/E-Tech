@@ -8,14 +8,14 @@
             <div class="card">
                 <img src="{{product.image.url}}" alt="" class="card-img-top" height=180px>
                 <div class="card-body">
-                    <div class="card-title " id="nm{{product.id}}" style="font-weight: 900;">
+                    <div class="card-title  cart-items "id="nm{{product.id}}" style="font-weight: 900;">
                         {{product.name}}
                         <div class="card-text" style="color: green; font-weight: 800;">
                             $ {{product.price}}
                         </div>
                     </div>
-                    <a class="btn btn-outline-warning " href="/{{product.id}}">View</a>
-                    <button data-product="{{product.id}}" data-action="add" class="btn atc btn-outline-warning add-btn update-cart ">Add to cart </button>
+                    <a class="btn btn-outline-warning " style="font-weight: 800px;" href="/{{product.id}}">View</a>
+                    <button data-product="{{product.id}}" data-action="add"  class="btn atc btn-outline-warning add-btn update-cart ">Add to cart </button>
 
                 </div>
             </div>

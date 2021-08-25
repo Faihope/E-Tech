@@ -104,8 +104,10 @@ sagittis lacus vel augue laoreet rutrum faucibus.">
             </button> -->
             <a href="{% url 'cart'%}"> <img id="cart-icon" src="{% static 'images/cart.png'%}" alt=""></a>
             <p id="cart-total">{{cartItems}}</p>
-            <a href="" style="color: white;" class="nav-item nav-link ">Login</a>
-            <a href="" style="color: white;" class="nav-item nav-link">Logout</a>
+            <a href="" style="color: white;" class="nav-item nav-link ">{{user}}</a>
+
+            <a href="{% url 'loginuser'%}" style="color: white;" class="nav-item nav-link ">Login</a>
+            <a href="{% url 'logout'%}" style="color: white;" class="nav-item nav-link">Logout</a>
 
         </div>
 
